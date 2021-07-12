@@ -19,10 +19,9 @@ export default {
 	components: { Header, TodoList },
 	data() {
 		return {
-			listTodo: [
-				{ id: 1, title: "học vuejs", completed: true },
-				{ id: 2, title: "học angular", completed: false },
-			],
+			listTodo: JSON.parse(localStorage.getItem("todos"))
+				? JSON.parse(localStorage.getItem("todos"))
+				: [],
 		};
 	},
 
@@ -38,16 +37,20 @@ export default {
 
 		handleRemoveTodo(id) {
 			this.listTodo = this.listTodo.filter((todo) => todo.id !== id);
+			localStorage.setItem("todos", JSON.stringify(this.listTodo));
 		},
 
 		handleAddTodo(todo) {
 			this.listTodo.push(todo);
+			localStorage.setItem("todos", JSON.stringify(this.listTodo));
 		},
 
 		handleUpdateTodo(newTodo) {
 			this.listTodo = this.listTodo.map((todo) =>
 				todo.id === newTodo.id ? { ...todo, ...newTodo } : todo
 			);
+
+			localStorage.setItem("todos", JSON.stringify(this.listTodo));
 		},
 	},
 };
